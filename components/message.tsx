@@ -1,4 +1,4 @@
-import { cls } from "@libs/utils/cls";
+import { cls } from "@libs/client/utils/cls";
 
 interface IMessage {
   message: string;

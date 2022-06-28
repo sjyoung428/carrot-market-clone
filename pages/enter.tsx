@@ -1,4 +1,5 @@
-import { cls } from "@libs/utils/cls";
+import useMutation from "@libs/client/hooks/useMutation";
+import { cls } from "@libs/client/utils/cls";
 import type { NextPage } from "next";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
@@ -13,6 +14,7 @@ interface IEnterForm {
 const Enter: NextPage = () => {
   const [submitting, setSubmitting] = useState(false);
   const [method, setMethod] = useState<"email" | "phone">("email");
+  const [enter, { loading, data, error }] = useMutation("/api/users/enter");
   const { register, reset, handleSubmit } = useForm<IEnterForm>();
   const onEmailClick = () => {
     reset();
@@ -23,18 +25,10 @@ const Enter: NextPage = () => {
     setMethod("phone");
   };
 
-  const onValid = async (data: IEnterForm) => {
-    setSubmitting(true);
-    await fetch("/api/users/enter", {
-      method: "POST",
-      body: JSON.stringify(data),
-      headers: {
-        "Content-Type": "application/json",
-      },
-    });
-    setSubmitting(false);
+  const onValid = async (formData: IEnterForm) => {
+    enter(formData);
   };
-
+  console.log(loading, data, error);
   return (
     <div className="mt-16 px-4">
       <h3 className="text-center text-3xl font-bold">Enter to Carrot</h3>

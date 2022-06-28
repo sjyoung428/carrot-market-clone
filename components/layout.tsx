@@ -1,7 +1,7 @@
 import React from "react";
 import Link from "next/link";
 import { useRouter } from "next/router";
-import { cls } from "@libs/utils/cls";
+import { cls } from "@libs/client/utils/cls";
 
 interface ILayout {
   title?: string;
