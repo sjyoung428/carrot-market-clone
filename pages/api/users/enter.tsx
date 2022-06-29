@@ -5,7 +5,8 @@ import { NextApiRequest, NextApiResponse } from "next";
 const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   if (req.method !== "POST") res.status(401).end();
   const { phone, email } = req.body;
-  const payload = phone ? { phone: +phone } : { email };
+  const user = phone ? { phone: +phone } : { email };
+  const payload = Math.floor(100000 + Math.random() * 900000) + "";
   // const user = await client.user.upsert({
   //   where: {
   //     ...payload,
@@ -18,15 +19,15 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   // });
   const token = await client.token.create({
     data: {
-      payload: "123", //랜덤
+      payload,
       user: {
         connectOrCreate: {
           where: {
-            ...payload,
+            ...user,
           },
           create: {
             name: "익명",
-            ...payload,
+            ...user,
           },
         },
       },
