@@ -1,4 +1,4 @@
-import withHandelr from "@libs/client/utils/withHandler";
+import withHandelr from "@libs/server/api/withHandler";
 import { NextApiRequest, NextApiResponse } from "next";
 
 const handler = async (req: NextApiRequest, res: NextApiResponse) => {
