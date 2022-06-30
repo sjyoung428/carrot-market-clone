@@ -10,6 +10,10 @@ interface IEnterForm {
   email?: string;
   phone?: string;
 }
+
+interface ITokenForm {
+  token: string;
+}
 interface IEnterMutation {
   ok: boolean;
 }
@@ -18,7 +22,12 @@ const Enter: NextPage = () => {
   const [method, setMethod] = useState<"email" | "phone">("email");
   const [enter, { loading, data, error }] =
     useMutation<IEnterMutation>("/api/users/enter");
+  const [tokenEnter, { loading: tokenLoading, data: tokenData }] =
+    useMutation<IEnterMutation>("/api/users/confirm");
   const { register, reset, handleSubmit } = useForm<IEnterForm>();
+  const { register: tokenRegister, handleSubmit: tokenHandleSubmit } =
+    useForm<ITokenForm>();
+
   const onEmailClick = () => {
     reset();
     setMethod("email");
@@ -31,12 +40,33 @@ const Enter: NextPage = () => {
   const onValid = async (formData: IEnterForm) => {
     enter(formData);
   };
+
+  const onTokenValid = (formData: ITokenForm) => {
+    if (tokenLoading) return;
+    tokenEnter(formData);
+  };
+
   console.log(data);
   return (
     <div className="mt-16 px-4">
       <h3 className="text-center text-3xl font-bold">Enter to Carrot</h3>
       <div className="mt-12">
-        {data?.ok ? null : (
+        {data?.ok ? (
+          <form
+            onSubmit={tokenHandleSubmit(onTokenValid)}
+            className="mt-8 flex flex-col space-y-4"
+          >
+            <Input
+              register={tokenRegister("token")}
+              name="token"
+              label="Confirmation Token"
+              type="number"
+              required
+            />
+
+            <Button text={loading ? "Loading..." : "Confirmation Token"} />
+          </form>
+        ) : (
           <>
             <div className="flex flex-col items-center">
               <h5 className="text-sm font-medium text-gray-500">
