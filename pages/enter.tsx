@@ -28,7 +28,6 @@ const Enter: NextPage = () => {
   const onValid = async (formData: IEnterForm) => {
     enter(formData);
   };
-  console.log(loading, data, error);
   return (
     <div className="mt-16 px-4">
       <h3 className="text-center text-3xl font-bold">Enter to Carrot</h3>
@@ -83,9 +82,11 @@ const Enter: NextPage = () => {
               required
             />
           ) : null}
-          {method === "email" ? <Button text={"Get login link"} /> : null}
+          {method === "email" ? (
+            <Button text={loading ? "Loading..." : "Get login link"} />
+          ) : null}
           {method === "phone" ? (
-            <Button text={"Get one-time password"} />
+            <Button text={loading ? "Loading..." : "Get one-time password"} />
           ) : null}
         </form>
 
