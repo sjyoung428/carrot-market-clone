@@ -12,7 +12,7 @@ const handler = async (
 ) => {
   if (req.method !== "POST") res.status(401).end();
   const { phone, email } = req.body;
-  const user = phone ? { phone: +phone } : email ? { email } : null;
+  const user = phone ? { phone: phone } : email ? { email } : null;
 
   if (!user) return res.status(400).json({ ok: false });
 
@@ -67,7 +67,7 @@ const handler = async (
   //   console.log(result);
   // }
 
-  return res.status(200).json({ ok: true });
+  return res.json({ ok: true });
 };
 
 export default withHandler("POST", handler);
