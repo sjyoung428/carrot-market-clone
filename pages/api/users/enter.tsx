@@ -1,4 +1,4 @@
-import withHandelr, { IResponse } from "@libs/server/api/withHandler";
+import withHandler, { IResponse } from "@libs/server/api/withHandler";
 import client from "@libs/server/db/client";
 import smtpTransport from "@libs/server/api/email";
 import { NextApiRequest, NextApiResponse } from "next";
@@ -42,31 +42,32 @@ const handler = async (
   //   });
   //   console.log(message);
   // }
-  if (email) {
-    const mailOptions = {
-      from: process.env.MAIL_ID,
-      to: email,
-      subject: "Carrot Market Clone Authentication Email",
-      // text: `Authentication Code : ${payload}`,
-      html: `Authentication Code : <strong>${payload}</strong>`,
-    };
-    const result = await smtpTransport.sendMail(
-      mailOptions,
-      (error, responses) => {
-        if (error) {
-          console.log(error);
-          return null;
-        } else {
-          console.log(responses);
-          return null;
-        }
-      }
-    );
-    smtpTransport.close();
-    console.log(result);
-  }
+
+  // if (email) {
+  //   const mailOptions = {
+  //     from: process.env.MAIL_ID,
+  //     to: email,
+  //     subject: "Carrot Market Clone Authentication Email",
+  //     // text: `Authentication Code : ${payload}`,
+  //     html: `Authentication Code : <strong>${payload}</strong>`,
+  //   };
+  //   const result = await smtpTransport.sendMail(
+  //     mailOptions,
+  //     (error, responses) => {
+  //       if (error) {
+  //         console.log(error);
+  //         return null;
+  //       } else {
+  //         console.log(responses);
+  //         return null;
+  //       }
+  //     }
+  //   );
+  //   smtpTransport.close();
+  //   console.log(result);
+  // }
 
   return res.status(200).json({ ok: true });
 };
 
-export default withHandelr("POST", handler);
+export default withHandler("POST", handler);

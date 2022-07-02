@@ -5,7 +5,7 @@ export interface IResponse {
   [key: string]: any;
 }
 
-const withHandelr = (
+const withHandler = (
   method: "GET" | "POST" | "DELETE",
   callback: (req: NextApiRequest, res: NextApiResponse) => void
 ) => {
@@ -20,4 +20,4 @@ const withHandelr = (
   };
 };
 
-export default withHandelr; // 메소드 체크 및 에러 핸들러
+export default withHandler; // 메소드 체크 및 에러 핸들러
