@@ -70,4 +70,8 @@ const handler = async (
   return res.json({ ok: true });
 };
 
-export default withHandler("POST", handler);
+export default withHandler({
+  method: "POST",
+  callback: handler,
+  isPrivate: false,
+});

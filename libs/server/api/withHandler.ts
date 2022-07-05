@@ -5,12 +5,17 @@ export interface IResponse {
   [key: string]: any;
 }
 
-const withHandler = (
-  method: "GET" | "POST" | "DELETE",
-  callback: (req: NextApiRequest, res: NextApiResponse) => void
-) => {
+interface IConfig {
+  method: "GET" | "POST" | "DELETE";
+  callback: (req: NextApiRequest, res: NextApiResponse) => void;
+  isPrivate?: boolean;
+}
+
+const withHandler = ({ method, callback, isPrivate = true }: IConfig) => {
   return async (req: NextApiRequest, res: NextApiResponse) => {
     if (method !== method) return res.status(405); // GET | POST | DELETE 이 아닐 때
+    if (isPrivate && !req.session.user)
+      return res.status(401).json({ ok: false, error: "로그인 하세요" });
     try {
       await callback(req, res);
     } catch (error) {
