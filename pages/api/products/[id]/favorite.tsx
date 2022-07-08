@@ -11,7 +11,7 @@ async function handler(req: NextApiRequest, res: NextApiResponse<IResponse>) {
 
   const alreadyExists = await client.favorite.findFirst({
     where: {
-      id: +id.toString(),
+      productId: +id.toString(),
       userId: user?.id,
     },
   });
