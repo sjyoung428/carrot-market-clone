@@ -13,15 +13,16 @@ datasource db {
 }
 
 model User {
-  id       Int       @id @default(autoincrement())
-  phone    String?   @unique
+  id       Int        @id @default(autoincrement())
+  phone    String?    @unique
   name     String
-  email    String?   @unique
+  email    String?    @unique
   avatar   String?
-  createAt DateTime  @default(now())
-  updateAt DateTime  @updatedAt
+  createAt DateTime   @default(now())
+  updateAt DateTime   @updatedAt
   tokens   Token[]
   Product  Product[]
+  Favorite Favorite[]
 }
 
 model Token {
@@ -34,13 +35,25 @@ model Token {
 }
 
 model Product {
-  id          Int      @id @default(autoincrement())
-  user        User     @relation(fields: [userId], references: [id])
+  id          Int        @id @default(autoincrement())
+  user        User       @relation(fields: [userId], references: [id])
   userId      Int
   name        String
   price       Int
   image       String
-  description String   @db.MediumText
-  createAt    DateTime @default(now())
-  updateAt    DateTime @updatedAt
+  description String     @db.MediumText
+  createAt    DateTime   @default(now())
+  updateAt    DateTime   @updatedAt
+  Favorite    Favorite[]
+}
+
+model Favorite {
+  id        Int      @id @default(autoincrement())
+  user      User     @relation(fields: [userId], references: [id])
+  product   Product  @relation(fields: [productId], references: [id])
+  userId    Int
+  productId Int
+  createAt  DateTime @default(now())
+  updateAt  DateTime @updatedAt
+
 }
