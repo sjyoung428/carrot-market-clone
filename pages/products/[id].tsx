@@ -29,8 +29,7 @@ const ItemDetail: NextPage = () => {
   );
 
   const onFavoriteClick = () => {
-    if (!data) return;
-    mutate({ ...data, isLiked: !data?.isLiked }, false);
+    mutate((prev) => prev && { ...prev, isLiked: !prev?.isLiked }, false);
     toggleFavorite({});
   };
 
