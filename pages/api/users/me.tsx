@@ -7,7 +7,7 @@ async function handler(req: NextApiRequest, res: NextApiResponse<IResponse>) {
   const profile = await client.user.findUnique({
     where: { id: req.session.user?.id },
   });
-  console.log(profile)
+  console.log(profile);
   res.json({
     ok: true,
     profile,
@@ -16,7 +16,7 @@ async function handler(req: NextApiRequest, res: NextApiResponse<IResponse>) {
 
 export default withAPISession(
   withHandler({
-    method: "GET",
+    methods: ["GET"],
     callback: handler,
   })
 );
