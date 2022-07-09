@@ -65,6 +65,8 @@ model Post {
   id        Int         @id @default(autoincrement())
   user      User        @relation(fields: [userId], references: [id], onDelete: Cascade)
   userId    Int
+  latitude  Float?
+  longitude Float?
   question  String      @db.MediumText
   createAt  DateTime    @default(now())
   updateAt  DateTime    @updatedAt
