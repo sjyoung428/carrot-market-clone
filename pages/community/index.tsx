@@ -1,3 +1,4 @@
+import useCoords from "@libs/client/hooks/useCoords";
 import { Post, User } from "@prisma/client";
 import type { NextPage } from "next";
 import Link from "next/link";
@@ -19,7 +20,13 @@ interface PostsResponse {
 }
 
 const Community: NextPage = () => {
-  const { data } = useSWR<PostsResponse>("/api/posts");
+  const { latitude, longitude } = useCoords();
+  const { data } = useSWR<PostsResponse>(
+    latitude && longitude
+      ? `/api/posts?latitude=${latitude}&longitude=${longitude}`
+      : null
+  );
+  console.log(data?.posts);
 
   return (
     <Layout hasTabBar title="동네생활">
