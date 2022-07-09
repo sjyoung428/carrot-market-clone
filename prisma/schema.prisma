@@ -13,16 +13,19 @@ datasource db {
 }
 
 model User {
-  id       Int        @id @default(autoincrement())
-  phone    String?    @unique
-  name     String
-  email    String?    @unique
-  avatar   String?
-  createAt DateTime   @default(now())
-  updateAt DateTime   @updatedAt
-  tokens   Token[]
-  Product  Product[]
-  Favorite Favorite[]
+  id        Int         @id @default(autoincrement())
+  phone     String?     @unique
+  name      String
+  email     String?     @unique
+  avatar    String?
+  createAt  DateTime    @default(now())
+  updateAt  DateTime    @updatedAt
+  tokens    Token[]
+  Product   Product[]
+  Favorite  Favorite[]
+  Post      Post[]
+  Answer    Answer[]
+  Wondering Wondering[]
 }
 
 model Token {
@@ -36,7 +39,7 @@ model Token {
 
 model Product {
   id          Int        @id @default(autoincrement())
-  user        User       @relation(fields: [userId], references: [id])
+  user        User       @relation(fields: [userId], references: [id], onDelete: Cascade)
   userId      Int
   name        String
   price       Int
@@ -49,11 +52,44 @@ model Product {
 
 model Favorite {
   id        Int      @id @default(autoincrement())
-  user      User     @relation(fields: [userId], references: [id])
-  product   Product  @relation(fields: [productId], references: [id])
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  product   Product  @relation(fields: [productId], references: [id], onDelete: Cascade)
   userId    Int
   productId Int
   createAt  DateTime @default(now())
   updateAt  DateTime @updatedAt
+
+}
+
+model Post {
+  id        Int         @id @default(autoincrement())
+  user      User        @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId    Int
+  question  String      @db.MediumText
+  createAt  DateTime    @default(now())
+  updateAt  DateTime    @updatedAt
+  answer    Answer[]
+  Wondering Wondering[]
+}
+
+model Answer {
+  id       Int      @id @default(autoincrement())
+  answer   String   @db.MediumText
+  user     User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  post     Post     @relation(fields: [postId], references: [id], onDelete: Cascade)
+  createAt DateTime @default(now())
+  updateAt DateTime @updatedAt
+  userId   Int
+  postId   Int
+}
+
+model Wondering {
+  id       Int      @id @default(autoincrement())
+  user     User     @relation(fields: [userId], references: [id])
+  post     Post     @relation(fields: [postId], references: [id])
+  userId   Int
+  postId   Int
+  createAt DateTime @default(now())
+  updateAt DateTime @updatedAt
 
 }
