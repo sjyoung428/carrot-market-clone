@@ -24,6 +24,7 @@ async function handler(req: NextApiRequest, res: NextApiResponse<IResponse>) {
       answer: {
         select: {
           answer: true,
+          id: true,
           user: {
             select: {
               id: true,
