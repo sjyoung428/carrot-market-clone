@@ -6,50 +6,50 @@ import { NextApiRequest, NextApiResponse } from "next";
 async function handler(req: NextApiRequest, res: NextApiResponse<IResponse>) {
   const {
     query: { id },
+    session: { user },
   } = req;
 
-  const post = await client.post.findUnique({
+  const alreadyExists = await client.wondering.findFirst({
     where: {
-      id: +id.toString(),
+      userId: user?.id,
+      postId: +id.toString(),
     },
-    include: {
-      user: {
-        select: {
-          id: true,
-          name: true,
-          avatar: true,
-        },
-      },
-      answer: {
-        select: {
-          answer: true,
-          user: {
-            select: {
-              id: true,
-              name: true,
-              avatar: true,
-            },
-          },
-        },
-      },
-      _count: {
-        select: {
-          Wondering: true,
-          answer: true,
-        },
-      },
+    select: {
+      id: true,
     },
   });
 
+  if (alreadyExists) {
+    await client.wondering.delete({
+      where: {
+        id: alreadyExists.id,
+      },
+    });
+  } else {
+    await client.wondering.create({
+      data: {
+        user: {
+          connect: {
+            id: user?.id,
+          },
+        },
+        post: {
+          connect: {
+            id: +id.toString(),
+          },
+        },
+      },
+    });
+  }
+
   res.json({
     ok: true,
-    post,
   });
 }
 
 export default withAPISession(
   withHandler({
-    methods: ["GET"],
+    methods: ["POST"],
     callback: handler,
   })
 );
