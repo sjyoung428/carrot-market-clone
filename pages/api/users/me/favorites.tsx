@@ -4,13 +4,22 @@ import client from "@libs/server/db/client";
 import { NextApiRequest, NextApiResponse } from "next";
 
 async function handler(req: NextApiRequest, res: NextApiResponse<IResponse>) {
-  const profile = await client.user.findUnique({
-    where: { id: req.session.user?.id },
+  const {
+    session: { user },
+  } = req;
+
+  const favorites = await client.favorite.findMany({
+    where: {
+      userId: user?.id,
+    },
+    include: {
+      product: true,
+    },
   });
-  console.log(profile);
+
   res.json({
     ok: true,
-    profile,
+    favorites,
   });
 }
 
