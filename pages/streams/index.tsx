@@ -8,7 +8,7 @@ const Live: NextPage = () => {
     <Layout hasTabBar title="라이브">
       <div className=" space-y-4 divide-y-[1px]">
         {[1, 1, 1, 1, 1, 1, 1].map((_, i) => (
-          <Link key={i} href={`/live/${i}`}>
+          <Link key={i} href={`/streams/${i}`}>
             <a className="block px-4  pt-4">
               <div className="aspect-video w-full rounded-md bg-slate-300 shadow-sm" />
               <h1 className="mt-2 text-2xl font-bold text-gray-900">
@@ -17,7 +17,7 @@ const Live: NextPage = () => {
             </a>
           </Link>
         ))}
-        <FloatingButton href="/live/create">
+        <FloatingButton href="/streams/create">
           <svg
             className="h-6 w-6"
             fill="none"
