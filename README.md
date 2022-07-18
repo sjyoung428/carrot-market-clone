@@ -17,3 +17,9 @@ pscale connect carrot-market-clone
 ```bash
 npx prisma studio
 ```
+
+## seed 테스트
+
+```bash
+npx prisma db seed
+```
