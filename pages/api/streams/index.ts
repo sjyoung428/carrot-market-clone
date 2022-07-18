@@ -7,7 +7,10 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   const {
     session: { user },
     body: { name, price, description },
+    query: { page },
   } = req;
+  const take = 10;
+  const skip = (Number(page.toString()) - 1) * 10;
 
   if (req.method === "POST") {
     const stream = await client.stream.create({
@@ -27,10 +30,13 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
       stream,
     });
   } else if (req.method === "GET") {
-    const streams = await client.stream.findMany();
+    const items = await client.stream.findMany({
+      take,
+      skip,
+    });
     res.json({
       ok: true,
-      streams,
+      items,
     });
   }
 };

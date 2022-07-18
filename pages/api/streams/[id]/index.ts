@@ -7,6 +7,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   const {
     query: { id },
   } = req;
+
   const stream = await client.stream.findUnique({
     where: {
       id: Number(id.toString()),
