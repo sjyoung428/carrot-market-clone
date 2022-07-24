@@ -7,6 +7,8 @@ import Link from "next/link";
 import { Product, User } from "@prisma/client";
 import useMutation from "@libs/client/hooks/useMutation";
 import { cls } from "@libs/client/utils/cls";
+import Image from "next/image";
+import dino from "../../public/dino.png";
 
 interface ProductWithUser extends Product {
   user: User;
@@ -37,9 +39,24 @@ const ItemDetail: NextPage = () => {
     <Layout canGoBack>
       <div className="px-4  py-4">
         <div className="mb-8">
-          <div className="h-96 bg-slate-300" />
+          <div className="relative h-96">
+            <Image
+              src={dino}
+              className=" bg-slate-300 object-cover "
+              layout="fill"
+              alt="dino"
+            />
+          </div>
           <div className="flex cursor-pointer items-center space-x-3 border-t border-b py-3">
-            <div className="h-12 w-12 rounded-full bg-slate-300" />
+            <Image
+              width={48}
+              height={48}
+              className="rounded-full"
+              src={dino}
+              placeholder="blur"
+              alt="dino-profile"
+            />
+            {/* <div className="h-12 w-12 rounded-full bg-slate-300" /> */}
             <div>
               <p className="text-sm font-medium text-gray-700">
                 {data?.product?.user.name}
