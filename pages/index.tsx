@@ -1,10 +1,10 @@
-import type { NextPage } from "next";
 import FloatingButton from "@components/floating-button";
 import Item from "@components/item";
 import Layout from "@components/layout";
 import useUser from "@libs/client/hooks/useUser";
-import useSWR from "swr";
 import { Product } from "@prisma/client";
+import { NextPage } from "next";
+import useSWR from "swr";
 
 export interface ProductWithFavorite extends Product {
   _count: {

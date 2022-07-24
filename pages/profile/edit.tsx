@@ -1,11 +1,11 @@
-import type { NextPage } from "next";
 import Button from "@components/button";
 import Input from "@components/input";
 import Layout from "@components/layout";
 import useUser from "@libs/client/hooks/useUser";
-import { useForm } from "react-hook-form";
 import { useEffect, useState } from "react";
 import useMutation from "@libs/client/hooks/useMutation";
+import { NextPage } from "next";
+import { useForm } from "react-hook-form";
 
 interface EditProfileForm {
   email?: string;

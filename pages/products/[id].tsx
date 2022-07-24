@@ -1,13 +1,13 @@
-import type { NextPage } from "next";
 import Button from "@components/button";
 import Layout from "@components/layout";
-import { useRouter } from "next/router";
-import useSWR from "swr";
-import Link from "next/link";
-import { Product, User } from "@prisma/client";
 import useMutation from "@libs/client/hooks/useMutation";
 import { cls } from "@libs/client/utils/cls";
+import { Product, User } from "@prisma/client";
+import { NextPage } from "next";
 import Image from "next/image";
+import Link from "next/link";
+import { useRouter } from "next/router";
+import useSWR from "swr";
 import dino from "../../public/dino.png";
 
 interface ProductWithUser extends Product {
