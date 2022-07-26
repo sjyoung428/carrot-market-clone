@@ -5,11 +5,11 @@ export const middleware = (req: NextRequest) => {
   const { isBot } = userAgent(req);
   let ua = userAgent(req);
   if (isBot) {
-    console.log(ua);
+    // console.log(ua);
     return NextResponse.rewrite(new URL("/enter", req.url));
   }
   let cookie = req.cookies.get("carrotsession");
-  console.log(cookie);
+  // console.log(cookie);
   // console.log(req.cookies.get("carrotsession"));
   if (!req.nextUrl.pathname.startsWith("/api")) {
     if (!req.nextUrl.pathname.startsWith("/enter")) {

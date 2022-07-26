@@ -4,7 +4,7 @@ import Layout from "@components/layout";
 import useUser from "@libs/client/hooks/useUser";
 import { Product } from "@prisma/client";
 import { NextPage } from "next";
-import useSWR from "swr";
+import useSWR, { SWRConfig } from "swr";
 import client from "@libs/server/db/client";
 
 export interface ProductWithFavorite extends Product {
@@ -18,21 +18,23 @@ interface ProductsResponse {
   products: ProductWithFavorite[];
 }
 
-const Home: NextPage<{ products: ProductWithFavorite[] }> = ({ products }) => {
+const Home: NextPage = () => {
   const { user, isLoading } = useUser();
-  // const { data } = useSWR<ProductsResponse>("/api/products");
+  const { data } = useSWR<ProductsResponse>("/api/products");
   return (
     <Layout title="홈" hasTabBar>
       <div className="flex flex-col space-y-5 divide-y">
-        {products?.map((product) => (
-          <Item
-            id={product.id}
-            key={product.id}
-            title={product.name}
-            price={product.price}
-            hearts={product._count?.Favorite}
-          />
-        ))}
+        {data
+          ? data?.products?.map((product) => (
+              <Item
+                id={product.id}
+                key={product.id}
+                title={product.name}
+                price={product.price}
+                hearts={product._count?.Favorite || 0}
+              />
+            ))
+          : "Loading.."}
         <FloatingButton href="/products/upload">
           <svg
             className="h-6 w-6"
@@ -55,9 +57,27 @@ const Home: NextPage<{ products: ProductWithFavorite[] }> = ({ products }) => {
   );
 };
 
-export default Home;
+const Page: NextPage<{ products: ProductWithFavorite[] }> = ({ products }) => {
+  return (
+    <SWRConfig
+      value={{
+        fallback: {
+          "/api/products": {
+            ok: true,
+            products,
+          },
+        },
+      }}
+    >
+      <Home />
+    </SWRConfig>
+  );
+};
+
+export default Page;
 
 export const getServerSideProps = async () => {
+  console.log("Hi I'm SSR");
   const products = await client.product.findMany({});
   return {
     props: {
