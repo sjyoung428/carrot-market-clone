@@ -8,6 +8,8 @@ category: first
 
 hi
 
+- list
+
 ```js
 const a = 1;
 console.log(a);

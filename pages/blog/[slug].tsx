@@ -1,3 +1,4 @@
+import Layout from "@components/layout";
 import { readdirSync } from "fs";
 import matter from "gray-matter";
 import { GetStaticProps, NextPage } from "next";
@@ -5,13 +6,23 @@ import remarkHtml from "remark-html";
 import remarkParse from "remark-parse/lib";
 import { unified } from "unified";
 
-interface PostProps {
+interface PostProps<T> {
   post: string;
+  data: T;
 }
 
-const Post: NextPage<PostProps> = ({ post }) => {
-  console.log(post);
-  return <>{post}</>;
+const Post: NextPage<
+  PostProps<{ title: string; data: number; category: string }>
+> = ({ post, data }) => {
+  return (
+    <Layout title={data.title}>
+      <div
+        className="blog-post-content"
+        dangerouslySetInnerHTML={{ __html: post }}
+      />
+      {/* string형식의 html코드 변환 */}
+    </Layout>
+  );
 };
 
 export const getStaticPaths = () => {
@@ -31,6 +42,7 @@ export const getStaticPaths = () => {
 
 export const getStaticProps: GetStaticProps = async (context) => {
   const { data, content } = matter.read(`./posts/${context.params?.slug}.md`);
+  console.log(data);
 
   const { value } = await unified()
     .use(remarkParse)
@@ -38,6 +50,7 @@ export const getStaticProps: GetStaticProps = async (context) => {
     .process(content); // markdown => html
   return {
     props: {
+      data,
       post: value,
     },
   };
